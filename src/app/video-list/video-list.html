@@ -2,12 +2,12 @@
   <h1>Aikido Video Library</h1>
 
   <div class="actions">
-    <button mat-raised-button color="primary" (click)="addVideo()">Add Video</button>
+    <!-- <button mat-raised-button color="primary" (click)="addVideo()">Add Video</button> -->
 
     <app-csv-import></app-csv-import>
   </div>
 
-  <div [formGroup]="filterForm">
+  <!-- <div [formGroup]="filterForm">
     <div class="filters">
       <mat-form-field>
         <mat-label>Filter by Name</mat-label>
@@ -55,7 +55,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-  </div>
+  </div> -->
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="name">
@@ -96,13 +96,13 @@
           <mat-icon>play_arrow</mat-icon>
         </button>
 
-        <button mat-icon-button (click)="editVideo(video)" matTooltip="Edit">
+        <!-- <button mat-icon-button (click)="editVideo(video)" matTooltip="Edit">
           <mat-icon>edit</mat-icon>
         </button>
 
         <button mat-icon-button (click)="deleteVideo(video)" matTooltip="Delete">
           <mat-icon>delete</mat-icon>
-        </button>
+        </button> -->
       </td>
     </ng-container>
 
