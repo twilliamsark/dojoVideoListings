@@ -10,63 +10,40 @@ import {
 } from '@angular/core';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-
 import { MatSortModule, MatSort } from '@angular/material/sort';
-
 import { MatButtonModule } from '@angular/material/button';
-
 import { MatIconModule } from '@angular/material/icon';
-
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-
 import { MatFormFieldModule } from '@angular/material/form-field';
-
 import { MatInputModule } from '@angular/material/input';
-
 import { MatSelectModule } from '@angular/material/select';
-
 import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 
 import { VideoStore } from '../services/video-store.service';
-
 import { Video } from '../models/video.model';
-
 import { VideoForm } from '../video-form/video-form';
-
 import { CsvImport } from '../csv-import/csv-import';
 
 @Component({
   selector: 'app-video-list',
-
   imports: [
     MatTableModule,
-
     MatSortModule,
-
     MatButtonModule,
-
     MatIconModule,
-
     MatDialogModule,
-
     MatFormFieldModule,
-
     MatInputModule,
-
     MatSelectModule,
-
     ReactiveFormsModule,
 
     CsvImport,
   ],
-
   templateUrl: './video-list.html',
-
   styleUrl: './video-list.scss',
 })
 export class VideoList implements OnInit, AfterViewInit {
   private videoStore = inject(VideoStore);
-
   private dialog = inject(MatDialog);
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -89,47 +66,28 @@ export class VideoList implements OnInit, AfterViewInit {
 
   filterForm = new FormGroup({
     name: new FormControl(''),
-
     technique: new FormControl(''),
-
     direction: new FormControl(''),
-
     stance: new FormControl(''),
-
     format: new FormControl(''),
   });
 
   techniques = [
     'Bokken Suburi',
-
     'General Exercise',
-
     'Gokyo',
-
     'Hiji Kata',
-
     'Iaido Only',
-
     'Ikkyo',
-
     'Iriminage',
-
     'Jo Kata',
-
     'Kaitennage',
-
     'Kokyuho',
-
     'Kokyunage',
-
     'Kotegaeshi',
-
     'Nikyo',
-
     'Sankyo',
-
     'Shihonage',
-
     'Udekimenage',
   ];
 
@@ -139,21 +97,13 @@ export class VideoList implements OnInit, AfterViewInit {
 
   formats = [
     'Aiki Toho',
-
     'Jo no Tebiki',
-
     'Ken no Tebiki',
-
     'Ken ti Jo',
-
     'Ken ti Ken',
-
     'Other',
-
     'Oyo',
-
     'Suwariwaza',
-
     'Tiado',
   ];
 
@@ -167,13 +117,9 @@ export class VideoList implements OnInit, AfterViewInit {
     this.filterForm.valueChanges.subscribe((value) => {
       this.filters.set({
         name: value.name || undefined,
-
         technique: value.technique || undefined,
-
         direction: value.direction || undefined,
-
         stance: value.stance || undefined,
-
         format: value.format || undefined,
       });
     });
@@ -181,6 +127,16 @@ export class VideoList implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+  }
+
+  clearFilters() {
+    this.filters.set({
+      name: undefined,
+      technique: undefined,
+      direction: undefined,
+      stance: undefined,
+      format: undefined,
+    });
   }
 
   addVideo() {

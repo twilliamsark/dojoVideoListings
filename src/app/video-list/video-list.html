@@ -5,57 +5,64 @@
     <!-- <button mat-raised-button color="primary" (click)="addVideo()">Add Video</button> -->
 
     <app-csv-import></app-csv-import>
+    <button mat-raised-button color="primary" (click)="clearFilters()">Clear Filters</button>
   </div>
 
-  <!-- <div [formGroup]="filterForm">
-    <div class="filters">
-      <mat-form-field>
-        <mat-label>Filter by Name</mat-label>
+  <form [formGroup]="filterForm" class="filters">
+    <mat-form-field>
+      <mat-label>Filter by Name</mat-label>
 
-        <input matInput formControlName="name" [formGroup]="filterForm" />
-      </mat-form-field>
+      <input matInput formControlName="name" [formGroup]="filterForm" />
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Filter by Technique</mat-label>
+    <mat-form-field>
+      <mat-label>Filter by Technique</mat-label>
 
-        <mat-select formControlName="technique" [formGroup]="filterForm">
-          <mat-option value="">All</mat-option>
+      <mat-select formControlName="technique">
+        <mat-option value="">All</mat-option>
 
-          <mat-option *ngFor="let tech of techniques" [value]="tech">{{ tech }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+        @for (tech of techniques; track tech) {
+          <mat-option [value]="tech">{{ tech }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Filter by Direction</mat-label>
+    <mat-form-field>
+      <mat-label>Filter by Direction</mat-label>
 
-        <mat-select formControlName="direction" [formGroup]="filterForm">
-          <mat-option value="">All</mat-option>
+      <mat-select formControlName="direction" [formGroup]="filterForm">
+        <mat-option value="">All</mat-option>
 
-          <mat-option *ngFor="let dir of directions" [value]="dir">{{ dir }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+        @for (dir of directions; track dir) {
+          <mat-option [value]="dir">{{ dir }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Filter by Stance</mat-label>
+    <mat-form-field>
+      <mat-label>Filter by Stance</mat-label>
 
-        <mat-select formControlName="stance" [formGroup]="filterForm">
-          <mat-option value="">All</mat-option>
+      <mat-select formControlName="stance" [formGroup]="filterForm">
+        <mat-option value="">All</mat-option>
 
-          <mat-option *ngFor="let stance of stances" [value]="stance">{{ stance }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+        @for (stance of stances; track stance) {
+          <mat-option [value]="stance">{{ stance }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Filter by Format</mat-label>
+    <mat-form-field>
+      <mat-label>Filter by Format</mat-label>
 
-        <mat-select formControlName="format" [formGroup]="filterForm">
-          <mat-option value="">All</mat-option>
+      <mat-select formControlName="format" [formGroup]="filterForm">
+        <mat-option value="">All</mat-option>
 
-          <mat-option *ngFor="let fmt of formats" [value]="fmt">{{ fmt }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div> -->
+        @for (fmt of formats; track fmt) {
+          <mat-option [value]="fmt">{{ fmt }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="name">
