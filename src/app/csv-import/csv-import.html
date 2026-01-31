@@ -1,0 +1,9 @@
+<input
+  type="file"
+  accept=".csv"
+  (change)="onFileSelected($event)"
+  style="display: none"
+  #fileInput
+/>
+
+<button mat-raised-button color="accent" (click)="fileInput.click()">Import CSV</button>
