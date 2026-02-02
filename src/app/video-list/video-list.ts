@@ -143,6 +143,7 @@ export class VideoList implements OnInit, AfterViewInit {
       stance: undefined,
       format: undefined,
     });
+    this.filterForm.reset();
   }
 
   addVideo() {
