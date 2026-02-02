@@ -9,6 +9,10 @@
     @if (isAdmin()) {
       <app-csv-import></app-csv-import>
     }
+
+    @if (isAdmin()) {
+      <app-csv-export></app-csv-export>
+    }
     <button mat-raised-button color="primary" (click)="clearFilters()">Clear Filters</button>
   </div>
 

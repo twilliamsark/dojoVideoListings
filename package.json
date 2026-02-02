@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "emulator": "firebase emulators:start --only auth,hosting,firestore --import test-data --export-on-exit"
+    "emulator": "firebase emulators:start --only auth,firestore --import test-data --export-on-exit"
   },
   "prettier": {
     "printWidth": 100,

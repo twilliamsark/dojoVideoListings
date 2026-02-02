@@ -12,6 +12,7 @@ import {
 } from '@angular/fire/firestore';
 
 import { Video } from '../models/video.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,10 @@ import { Video } from '../models/video.model';
 export class VideoStore {
   private videos = signal<Video[]>([]);
 
-  constructor(private firestore: Firestore) {
+  constructor(
+    private firestore: Firestore,
+    private authService: AuthService,
+  ) {
     this.loadFromFirestore();
   }
 
@@ -156,6 +160,13 @@ export class VideoStore {
 
   getVideoById(id: string) {
     return this.videos().find((v) => v.id === id);
+  }
+
+  allVideos(): Video[] {
+    if (!this.authService.isAdmin()) {
+      throw new Error('Admin access required');
+    }
+    return this.videos();
   }
 
   // No longer saving to localStorage, data is in Firestore

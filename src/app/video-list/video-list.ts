@@ -23,6 +23,7 @@ import { VideoStore } from '../services/video-store.service';
 import { Video } from '../models/video.model';
 import { VideoForm } from '../video-form/video-form';
 import { CsvImport } from '../csv-import/csv-import';
+import { CsvExport } from '../csv-export/csv-export';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -39,6 +40,7 @@ import { AuthService } from '../services/auth.service';
     ReactiveFormsModule,
 
     CsvImport,
+    CsvExport,
   ],
   templateUrl: './video-list.html',
   styleUrl: './video-list.scss',
