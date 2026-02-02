@@ -13,8 +13,11 @@ yarn-error.log
 
 # Firebase
 .firebase/dojovideolistings/functions/node_modules
+.firebase/dojovideolistings/functions
+.firebase/dojovideolistings/hosting
 firebase-debug.log
-fifestore-debug.log
+firestore-debug.log
+
 
 # IDEs and editors
 .idea/
