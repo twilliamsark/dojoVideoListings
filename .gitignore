@@ -10,7 +10,11 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+
+# Firebase
 .firebase/dojovideolistings/functions/node_modules
+firebase-debug.log
+fifestore-debug.log
 
 # IDEs and editors
 .idea/
