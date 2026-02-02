@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  useEmulators: false, // true == locally
+  useEmulators: true, // true == locally
   firebase: {
     apiKey: 'AIzaSyAeEMQta87wGqhMdUNndnfeS4UEnQK7-O0',
     authDomain: 'dojovideolistings.firebaseapp.com',

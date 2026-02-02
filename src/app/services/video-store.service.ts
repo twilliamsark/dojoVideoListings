@@ -1,4 +1,15 @@
 import { Injectable, signal, computed, effect } from '@angular/core';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDocs,
+  doc,
+  query,
+  orderBy,
+} from '@angular/fire/firestore';
 
 import { Video } from '../models/video.model';
 
@@ -8,13 +19,31 @@ import { Video } from '../models/video.model';
 export class VideoStore {
   private videos = signal<Video[]>([]);
 
-  constructor() {
-    this.loadFromStorage();
+  constructor(private firestore: Firestore) {
+    this.loadFromFirestore();
+  }
+
+  private async loadFromFirestore() {
+    try {
+      const videosRef = collection(this.firestore, 'videos');
+      const q = query(videosRef, orderBy('name'));
+      const snapshot = await getDocs(q);
+      const videos = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Video);
+      this.videos.set(videos);
+
+      // If no videos in Firestore, migrate from localStorage
+      if (videos.length === 0) {
+        this.migrateFromLocalStorage();
+      }
+    } catch (error) {
+      console.error('Error loading videos from Firestore', error);
+      // Fallback to localStorage
+      this.loadFromStorage();
+    }
   }
 
   private loadFromStorage() {
     const stored = localStorage.getItem('videos');
-
     if (stored) {
       try {
         this.videos.set(JSON.parse(stored));
@@ -24,18 +53,53 @@ export class VideoStore {
     }
   }
 
-  addVideo(video: Omit<Video, 'id'>) {
-    const newVideo: Video = { ...video, id: crypto.randomUUID() };
-
-    this.videos.update((list) => [...list, newVideo]);
+  private async migrateFromLocalStorage() {
+    const stored = localStorage.getItem('videos');
+    if (stored) {
+      try {
+        const localVideos: Video[] = JSON.parse(stored);
+        for (const video of localVideos) {
+          await addDoc(collection(this.firestore, 'videos'), { ...video, id: undefined });
+        }
+        this.videos.set(localVideos);
+        localStorage.removeItem('videos'); // Clean up
+      } catch (e) {
+        console.error('Error migrating videos to Firestore', e);
+      }
+    }
   }
 
-  updateVideo(id: string, updates: Partial<Omit<Video, 'id'>>) {
-    this.videos.update((list) => list.map((v) => (v.id === id ? { ...v, ...updates } : v)));
+  async addVideo(video: Omit<Video, 'id'>) {
+    try {
+      video.direction = video.direction === undefined ? '' : video.direction;
+      video.stance = video.stance === undefined ? '' : video.stance;
+      console.log('Adding video to Firestore', video);
+      const docRef = await addDoc(collection(this.firestore, 'videos'), video);
+      const newVideo: Video = { ...video, id: docRef.id };
+      this.videos.update((list) => [...list, newVideo]);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  deleteVideo(id: string) {
-    this.videos.update((list) => list.filter((v) => v.id !== id));
+  async updateVideo(id: string, updates: Partial<Omit<Video, 'id'>>) {
+    try {
+      const videoDoc = doc(this.firestore, 'videos', id);
+      await updateDoc(videoDoc, updates);
+      this.videos.update((list) => list.map((v) => (v.id === id ? { ...v, ...updates } : v)));
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteVideo(id: string) {
+    try {
+      const videoDoc = doc(this.firestore, 'videos', id);
+      await deleteDoc(videoDoc);
+      this.videos.update((list) => list.filter((v) => v.id !== id));
+    } catch (error) {
+      throw error;
+    }
   }
 
   getFilteredAndSortedVideos(
@@ -91,9 +155,5 @@ export class VideoStore {
     return this.videos().find((v) => v.id === id);
   }
 
-  // Effect to save to localStorage
-
-  private saveEffect = effect(() => {
-    localStorage.setItem('videos', JSON.stringify(this.videos()));
-  });
+  // No longer saving to localStorage, data is in Firestore
 }

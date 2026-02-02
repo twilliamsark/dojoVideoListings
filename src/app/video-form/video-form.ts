@@ -8,6 +8,7 @@ import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angula
 
 import { VideoStore } from '../services/video-store.service';
 import { Video } from '../models/video.model';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-video-form',
@@ -25,6 +26,7 @@ import { Video } from '../models/video.model';
 export class VideoForm {
   private videoStore = inject(VideoStore);
   private dialogRef = inject(MatDialogRef<VideoForm>);
+  private authService = inject(AuthService);
 
   private data = inject<Video | null>(MAT_DIALOG_DATA);
 
@@ -74,17 +76,26 @@ export class VideoForm {
     'Tiado',
   ];
 
-  save() {
+  async save() {
+    if (!this.authService.isAdmin()) {
+      alert('Admin access required');
+      return;
+    }
+
     if (this.form.valid) {
       const videoData = this.form.value as Omit<Video, 'id'>;
 
-      if (this.isEdit && this.data) {
-        this.videoStore.updateVideo(this.data.id, videoData);
-      } else {
-        this.videoStore.addVideo(videoData);
-      }
+      try {
+        if (this.isEdit && this.data) {
+          await this.videoStore.updateVideo(this.data.id, videoData);
+        } else {
+          await this.videoStore.addVideo(videoData);
+        }
 
-      this.dialogRef.close();
+        this.dialogRef.close();
+      } catch (error) {
+        alert('Error saving video');
+      }
     }
   }
 

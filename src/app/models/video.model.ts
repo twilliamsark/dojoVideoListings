@@ -23,9 +23,9 @@ export interface Video {
     | 'Shihonage'
     | 'Udekimenage';
 
-  direction?: 'Omote' | 'Ura';
+  direction?: '' | 'Omote' | 'Ura';
 
-  stance?: 'Aihanmi' | 'Gyakuhanmi';
+  stance?: '' | 'Aihanmi' | 'Gyakuhanmi';
 
   format:
     | 'Aiki Toho'

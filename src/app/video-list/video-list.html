@@ -2,9 +2,13 @@
   <h1>Aikido Video Library</h1>
 
   <div class="actions">
-    <button mat-raised-button color="primary" (click)="addVideo()">Add Video</button>
+    @if (isAdmin()) {
+      <button mat-raised-button color="primary" (click)="addVideo()">Add Video</button>
+    }
 
-    <app-csv-import></app-csv-import>
+    @if (isAdmin()) {
+      <app-csv-import></app-csv-import>
+    }
     <button mat-raised-button color="primary" (click)="clearFilters()">Clear Filters</button>
   </div>
 
@@ -103,13 +107,17 @@
           <mat-icon>play_arrow</mat-icon>
         </button>
 
-        <button mat-icon-button (click)="editVideo(video)" matTooltip="Edit">
-          <mat-icon>edit</mat-icon>
-        </button>
+        @if (isAdmin()) {
+          <button mat-icon-button (click)="editVideo(video)" matTooltip="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+        }
 
-        <button mat-icon-button (click)="deleteVideo(video)" matTooltip="Delete">
-          <mat-icon>delete</mat-icon>
-        </button>
+        @if (isAdmin()) {
+          <button mat-icon-button (click)="deleteVideo(video)" matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
       </td>
     </ng-container>
 

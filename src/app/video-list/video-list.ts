@@ -23,6 +23,7 @@ import { VideoStore } from '../services/video-store.service';
 import { Video } from '../models/video.model';
 import { VideoForm } from '../video-form/video-form';
 import { CsvImport } from '../csv-import/csv-import';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-video-list',
@@ -45,6 +46,7 @@ import { CsvImport } from '../csv-import/csv-import';
 export class VideoList implements OnInit, AfterViewInit {
   private videoStore = inject(VideoStore);
   private dialog = inject(MatDialog);
+  private authService = inject(AuthService);
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -63,6 +65,8 @@ export class VideoList implements OnInit, AfterViewInit {
   filteredVideos = computed(() =>
     this.videoStore.getFilteredAndSortedVideos('name', this.filters())(),
   );
+
+  isAdmin = computed(() => this.authService.isAdmin());
 
   filterForm = new FormGroup({
     name: new FormControl(''),
@@ -151,9 +155,13 @@ export class VideoList implements OnInit, AfterViewInit {
     });
   }
 
-  deleteVideo(video: Video) {
+  async deleteVideo(video: Video) {
     if (confirm('Delete this video?')) {
-      this.videoStore.deleteVideo(video.id);
+      try {
+        await this.videoStore.deleteVideo(video.id);
+      } catch (error) {
+        alert('Error deleting video');
+      }
     }
   }
 

@@ -1,1 +1,23 @@
-<router-outlet />
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title() }}</h1>
+    <div class="auth-section">
+      @if (!user()) {
+        <div class="login-form">
+          <input #email type="email" placeholder="Email" />
+          <input #password type="password" placeholder="Password" />
+          <button (click)="login(email.value, password.value)">Login</button>
+          <button (click)="signInAnonymous()">Guest</button>
+        </div>
+      } @else {
+        <div class="user-info">
+          <span>{{ isAdmin() ? 'Admin' : 'Guest' }}: {{ user()?.email || 'Anonymous' }}</span>
+          <button (click)="logout()">Logout</button>
+        </div>
+      }
+    </div>
+  </header>
+  <main>
+    <router-outlet />
+  </main>
+</div>
