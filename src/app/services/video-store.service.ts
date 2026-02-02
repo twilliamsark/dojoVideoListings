@@ -35,6 +35,9 @@ export class VideoStore {
       if (videos.length === 0) {
         this.migrateFromLocalStorage();
       }
+      if (videos.length === 0) {
+        this.loadFromStorage();
+      }
     } catch (error) {
       console.error('Error loading videos from Firestore', error);
       // Fallback to localStorage
@@ -56,16 +59,16 @@ export class VideoStore {
   private async migrateFromLocalStorage() {
     const stored = localStorage.getItem('videos');
     if (stored) {
-      try {
-        const localVideos: Video[] = JSON.parse(stored);
-        for (const video of localVideos) {
-          await addDoc(collection(this.firestore, 'videos'), { ...video, id: undefined });
-        }
-        this.videos.set(localVideos);
-        localStorage.removeItem('videos'); // Clean up
-      } catch (e) {
-        console.error('Error migrating videos to Firestore', e);
+      // try {
+      const localVideos: Video[] = JSON.parse(stored);
+      for (const video of localVideos) {
+        await addDoc(collection(this.firestore, 'videos'), { ...video, id: undefined });
       }
+      this.videos.set(localVideos);
+      localStorage.removeItem('videos'); // Clean up
+      // } catch (e) {
+      //   console.error('Error migrating videos to Firestore', e);
+      // }
     }
   }
 
