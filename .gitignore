@@ -13,11 +13,13 @@ yarn-error.log
 
 # Firebase
 .firebase/dojovideolistings/functions/node_modules
-.firebase/dojovideolistings/functions
-.firebase/dojovideolistings/hosting
+.firebase/dojovideolistings/functions/*
+.firebase/dojovideolistings/hosting/*
 firebase-debug.log
 firestore-debug.log
-
+.firebase/hosting.LmZpcmViYXNlL2Rvam92aWRlb2xpc3RpbmdzL2hvc3Rpbmc.cache
+.firebase/dojovideolistings/hosting/index.html
+firestore-debug.log
 
 # IDEs and editors
 .idea/
@@ -50,3 +52,5 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+.firebase/
+test-data/
