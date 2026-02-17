@@ -115,7 +115,11 @@ export class VideoList implements OnInit, AfterViewInit {
 
   constructor() {
     effect(() => {
-      this.dataSource.data = this.filteredVideos();
+      if (this.authService.user()) {
+        this.dataSource.data = this.filteredVideos();
+      } else {
+        this.dataSource.data = [];
+      }
     });
   }
 
